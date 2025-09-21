@@ -1,4 +1,3 @@
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -36,16 +35,14 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
--- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
-		
-		{ "nvim-lua/plenary.nvim",       lazy = true }, 
-		{ "nvim-tree/nvim-web-devicons", lazy = true }, 
-        {
+		{ "nvim-lua/plenary.nvim",       lazy = true },
+		{ "nvim-tree/nvim-web-devicons", lazy = true },
+		{
 			"folke/tokyonight.nvim",
-			lazy = false, 
-			priority = 1000, 
+			lazy = false,
+			priority = 1000,
 			config = function()
 				vim.cmd.colorscheme("tokyonight-storm")
 			end,
@@ -65,10 +62,8 @@ require("lazy").setup({
 			"akinsho/bufferline.nvim",
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			version = "*",
-			config = true, 
+			config = true,
 		},
-
-	
 		{
 			"nvim-tree/nvim-tree.lua",
 			dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -84,42 +79,35 @@ require("lazy").setup({
 						group_empty = true,
 					},
 				})
-
-				vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "[E]xplorer" })
+				vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>")
 			end,
 		},
-
 		{
 			"nvim-telescope/telescope.nvim",
 			dependencies = { "nvim-lua/plenary.nvim" },
 			branch = "0.1.x",
 			config = function()
 				local telescope = require("telescope")
-				telescope.setup({}) 
-
+				telescope.setup({})
 				local builtin = require("telescope.builtin")
-				vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" }) 
-				vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" }) 
-				vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" }) 
-				vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" }) 
+				vim.keymap.set("n", "<leader>ff", builtin.find_files)
+				vim.keymap.set("n", "<leader>fg", builtin.live_grep)
+				vim.keymap.set("n", "<leader>fb", builtin.buffers)
+				vim.keymap.set("n", "<leader>fh", builtin.help_tags)
 			end,
 		},
-
 		{
 			"VonHeikemen/lsp-zero.nvim",
 			branch = "v3.x",
 			dependencies = {
 				{ "williamboman/mason.nvim" },
 				{ "williamboman/mason-lspconfig.nvim" },
-
 				{ "neovim/nvim-lspconfig" },
-
 				{ "hrsh7th/nvim-cmp" },
 				{ "hrsh7th/cmp-nvim-lsp" },
 				{ "hrsh7th/cmp-buffer" },
 				{ "hrsh7th/cmp-path" },
 				{ "hrsh7th/cmp-cmdline" },
-
 				{ "L3MON4D3/LuaSnip" },
 				{ "saadparwaiz1/cmp_luasnip" },
 				{ "rafamadriz/friendly-snippets" },
@@ -128,22 +116,17 @@ require("lazy").setup({
 				local lsp_zero = require("lsp-zero")
 				lsp_zero.on_attach(function(client, bufnr)
 					lsp_zero.default_keymaps({ buffer = bufnr })
+					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 				end)
-
 				require("mason").setup({})
 				require("mason-lspconfig").setup({
-					ensure_installed = {
-						"ts_ls", 
-						"lua_ls", 
-						"pyright", 
-						"gopls", 					},
+					ensure_installed = { "tsserver", "lua_ls", "pyright", "gopls" },
 					handlers = {
 						lsp_zero.default_setup,
 					},
 				})
 			end,
 		},
-
 		{
 			"lewis6991/gitsigns.nvim",
 			config = function()
@@ -166,6 +149,25 @@ require("lazy").setup({
 						timeout_ms = 500,
 						lsp_fallback = true,
 					},
+				})
+			end,
+		},
+		{
+			"lukas-reineke/indent-blankline.nvim",
+			main = "ibl",
+			config = function()
+				require("ibl").setup({
+					scope = { enabled = false }
+				})
+			end,
+		},
+		{
+			"akinsho/toggleterm.nvim",
+			version = "*",
+			config = function()
+				require("toggleterm").setup({
+					open_mapping = [[<c-\>]],
+					direction = 'float',
 				})
 			end,
 		},
